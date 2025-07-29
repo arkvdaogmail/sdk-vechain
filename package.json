@@ -14,8 +14,8 @@
     "next": "14.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
-  },
+{
   "engines": {
-    "node": "20.x"
+    "node": "22.x"  // Change from 18.x to 22.x
   }
 }
