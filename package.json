@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-  "build": "node install-deps.js && next build"
-}
-    "start": "next start"
+    "dev": "next dev",
+    "build": "npm install --legacy-peer-deps && next build",
+    "start": "next start",
+    "postinstall": "node verify-deps.js"
   },
   "dependencies": {
     "@vechain/sdk-core": "1.0.0",
@@ -16,6 +17,10 @@
   },
   "engines": {
     "node": "18.x"
+  },
+  "resolutions": {
+    "@vechain/sdk-core": "1.0.0",
+    "@vechain/sdk-network": "1.0.0"
   }
-
+}
 
