@@ -2,29 +2,29 @@ import { HttpClient } from '@vechain/sdk-network';
 
 export default async function handler(req, res) {
   try {
-    // Initialize HTTP client
-    const httpClient = new HttpClient('https://mainnet.vechain.org');
+    const NODE_URL = 'https://mainnet.vechain.org';
+    const httpClient = new HttpClient(NODE_URL);
     
-    // Test connection by fetching latest block
+    // Test connection with a simple block query
     const block = await httpClient.getBlock('best');
     
-    // Success response
+    // Get SDK version dynamically
+    const sdkCore = await import('@vechain/sdk-core');
+    const sdkVersion = sdkCore.VERSION;
+    
     res.status(200).json({
-      status: 'success',
-      message: 'Successfully connected to VeChain network',
-      network: 'mainnet',
+      status: 'connected',
+      nodeUrl: NODE_URL,
       blockNumber: block.number,
-      blockTimestamp: new Date(block.timestamp * 1000).toISOString(),
-      sdkVersion: require('@vechain/sdk-core/package.json').version
+      blockTimestamp: new Date(block.timestamp * 1000),
+      sdkVersion: sdkVersion,
+      network: 'mainnet'
     });
   } catch (error) {
-    // Error response with detailed diagnostics
     res.status(500).json({
-      status: 'error',
-      message: 'Connection to VeChain failed',
+      status: 'connection_failed',
       error: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
-      suggestion: 'Check network connection and VeChain node status'
+      suggestion: 'Check network access or try again later'
     });
   }
 }
