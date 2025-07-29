@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm install --legacy-peer-deps && next build",
-    "start": "next start",
-    "postinstall": "node verify-deps.js"
+    "start": "next start"
   },
   "dependencies": {
     "@vechain/sdk-core": "1.0.0",
@@ -14,8 +13,8 @@
     "next": "14.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
-{
+  },
   "engines": {
-    "node": "22.x" 
+    "node": "22.x"
   }
 }
