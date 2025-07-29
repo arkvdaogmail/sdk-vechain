@@ -1,32 +1,24 @@
 import { Transaction, secp256k1 } from '@vechain/sdk-core';
 import { HttpClient } from '@vechain/sdk-network';
-import { NextApiRequest, NextApiResponse } from 'next';
-import crypto from 'crypto';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  // 1. Get document buffer (from frontend upload)
+export default async function handler(req, res) {
+  // 1. Get document from frontend
   const documentBuffer = Buffer.from(req.body.file, 'base64');
 
-  // 2. Generate hash (your existing logic)
-  const hash = crypto.createHash('sha256')
+  // 2. Generate SHA-256 hash
+  const hash = require('crypto').createHash('sha256')
     .update(documentBuffer)
     .digest('hex');
 
-  // 3. VeChain testnet TX
+  // 3. Build VeChain TX
   const tx = new Transaction.Builder()
     .addComment(`DOC_HASH:${hash}`)
     .build();
 
-  // 4. Sign with testnet private key (use .env)
-  const signedTx = secp256k1.sign(
-    tx, 
-    process.env.TESTNET_PRIVATE_KEY!
-  );
+  // 4. Sign with testnet key (from GitHub Secrets)
+  const signedTx = secp256k1.sign(tx, process.env.TESTNET_PRIVATE_KEY);
 
-  // 5. Send to testnet (free)
+  // 5. Send to VeChain testnet
   const httpClient = new HttpClient('https://testnet.vechain.org');
   const txId = await httpClient.sendTransaction(signedTx);
 
