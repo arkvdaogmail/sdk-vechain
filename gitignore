@@ -1,0 +1,5 @@
+# Never commit these!
+node_modules
+.env
+.env.local
+.next
