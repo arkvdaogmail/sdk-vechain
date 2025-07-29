@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "npm install --legacy-peer-deps && next build",
+  "build": "node install-deps.js && next build"
+}
     "start": "next start"
   },
   "dependencies": {
