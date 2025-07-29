@@ -19,7 +19,9 @@ export default async function handler(req, res) {
   const signedTx = secp256k1.sign(tx, process.env.TESTNET_PRIVATE_KEY);
 
   // 5. Send to VeChain testnet
-  const httpClient = new HttpClient('https://testnet.vechain.org');
+const httpClient = new HttpClient(
+  process.env.TESTNET_NODE_URL || 'https://mainnet.vechain.org'  // Changed to mainnet
+);
   const txId = await httpClient.sendTransaction(signedTx);
 
   res.status(200).json({ txId, hash });
