@@ -1,7 +1,16 @@
-"dependencies": {
-  "@vechain/sdk-core": "^1.0.0",  // Updated to latest stable
-  "@vechain/sdk-network": "^1.0.0",
-  "next": "^14.0.0",
-  "react": "^18.0.0",
-  "react-dom": "^18.0.0"
+{
+  "name": "sdk-vechain",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@vechain/sdk-core": "^1.0.0",
+    "@vechain/sdk-network": "^1.0.0",
+    "next": "^14.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  }
 }
