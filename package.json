@@ -16,6 +16,6 @@
     "react-dom": "18.2.0"
 {
   "engines": {
-    "node": "22.x"  // Change from 18.x to 22.x
+    "node": "22.x" 
   }
 }
