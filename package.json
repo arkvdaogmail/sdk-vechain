@@ -1,10 +1,20 @@
 {
-  "name": "vechain-test",
+  "name": "stampid-server",
   "version": "1.0.0",
+  "description": "Backend server for the StampID project.",
+  "main": "server.js",
   "scripts": {
-    "start": "node test.js"
+    "start": "node server.js"
   },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@vechain/sdk-core": "^1.0.0"
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "stripe": "^15.12.0",
+    "thor-devkit": "^2.1.1"
   }
 }
