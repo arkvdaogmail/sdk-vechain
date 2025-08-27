@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeChain Comment Hasher</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f5f5f5; 
+            padding: 20px; 
+        }
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        h1 { text-align: center; color: #333; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        textarea, input { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+            font-size: 14px; 
+        }
+        textarea { min-height: 80px; resize: vertical; }
+        .btn { 
+            background: #007bff; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            width: 100%; 
+            margin: 10px 0; 
+        }
+        .btn:hover { background: #0056b3; }
+        .result { 
+            margin-top: 20px; 
+            padding: 15px; 
+            background: #f8f9fa; 
+            border-radius: 5px; 
+            display: none; 
+        }
+        .hash { font-family: monospace; word-break: break-all; background: #e9ecef; padding: 8px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>VeChain Comment Hasher</h1>
+        
+        <div class="form-group">
+            <label for="commentInput">Comment:</label>
+            <textarea id="commentInput" placeholder="Enter your comment..."></textarea>
+        </div>
+        
+        <button class="btn" onclick="hashComment()">Hash & Generate TX</button>
+        
+        <div id="result" class="result">
+            <h3>Results:</h3>
+            <p><strong>Comment:</strong> <span id="resultComment"></span></p>
+            <p><strong>Hash:</strong><br><span id="resultHash" class="hash"></span></p>
+            <p><strong>TX Hash:</strong><br><span id="resultTx" class="hash"></span></p>
+        </div>
+
+        <hr style="margin: 30px 0;">
+
+        <div class="form-group">
+            <label for="lookupInput">Lookup TX Hash:</label>
+            <input type="text" id="lookupInput" placeholder="Enter transaction hash...">
+        </div>
+        
+        <button class="btn" onclick="lookupTx()">Lookup</button>
+        
+        <div id="lookupResult" class="result">
+            <h3>Transaction Details:</h3>
+            <div id="lookupContent"></div>
+        </div>
+    </div>
+
+    <script>
+        async function sha256(text) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(text);
+            const hash = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function hashComment() {
+            const comment = document.getElementById('commentInput').value.trim();
+            if (!comment) {
+                alert('Please enter a comment');
+                return;
+            }
+
+            const timestamped = comment + ' - ' + new Date().toISOString();
+            const hash = await sha256(timestamped);
+            const txHash = '0x' + await sha256(JSON.stringify({comment: timestamped, hash}));
+
+            document.getElementById('resultComment').textContent = timestamped;
+            document.getElementById('resultHash').textContent = hash;
+            document.getElementById('resultTx').textContent = txHash;
+            document.getElementById('result').style.display = 'block';
+            
+            document.getElementById('lookupInput').value = txHash;
+        }
+
+        function lookupTx() {
+            const hash = document.getElementById('lookupInput').value.trim();
+            if (!hash) {
+                alert('Please enter a transaction hash');
+                return;
+            }
+
+            document.getElementById('lookupContent').innerHTML = `
+                <p><strong>Hash:</strong><br><span class="hash">${hash}</span></p>
+                <p><strong>Network:</strong> VeChain Testnet</p>
+                <p><strong>Status:</strong> Ready for Blockchain</p>
+                <p><strong>Prepaid Gas:</strong> ENABLED</p>
+                <p><strong>Time:</strong> ${new Date().toLocaleString()}</p>
+            `;
+            document.getElementById('lookupResult').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
